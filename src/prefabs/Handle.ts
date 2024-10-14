@@ -29,38 +29,33 @@ export default class Handle extends Container {
 
         this.addChild(this._handleShadow, this._handle);
 
-        this.positionHandle();
+        centerObjects(this);
 
     }
 
     resize(width: number, scFactor: number) {
         this.scale.set(scFactor);
 
-        this.positionHandle();
-    }
-
-    positionHandle() {
         centerObjects(this);
-        console.log(this._handleShadow.x);
     }
 
     public rotate(dir: number) {
-        console.log("clicked handle");
+        ;
         this.handleRotation += dir * 60;
         gsap.to(this._handle, {
-            pixi: {rotation: this.handleRotation },
+            pixi: { rotation: this.handleRotation },
             duration: 1,
-          });
+        });
         gsap.to(this._handleShadow, {
-        pixi: {rotation: this.handleRotation },
-        duration: 1,
+            pixi: { rotation: this.handleRotation },
+            duration: 1,
         });
     }
 
     public reset() {
         gsap.to(this, {
-            pixi: {rotation: 0 },
+            pixi: { rotation: 0 },
             duration: 1,
-          });
+        });
     }
 }

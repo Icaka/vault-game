@@ -12,23 +12,22 @@ export default class Game extends Scene {
   private background!: Background;
   private handle!: Handle;
   private door!: Door;
-  private blink!: Blink;
+  private blinkList!: Blink[];
   private pass!: number[];
   private currentTry!: number[];
   private currNum!: number;
   private currDirection: boolean | null = null;
-  private unlocked!: boolean;
   private startDirection!: boolean;
 
 
   load() {
-    this.unlocked = false;
     this.pass = [];
     this.currentTry = [];
     this.generatePassword();
     this.background = new Background('bg');
-    this.door = new Door('door', 'doorOpen', this.background.scaleFactor);
+    this.door = new Door('door', 'doorOpen', 'doorOpenShadow', this.background.scaleFactor);
     this.handle = new Handle('handle', "handleShadow", this.background.scaleFactor);
+    this.blinkList = [];
     centerObjects(this.door);
 
     
@@ -37,11 +36,14 @@ export default class Game extends Scene {
     this.handle.eventMode = 'static';
     this.handle.on('pointerdown', (e) => this.clickedHandle(e))
 
-    this.addChild(new Blink('blink', this.background.scaleFactor, new Point(-500, 50)));
-    this.addChild(new Blink('blink', this.background.scaleFactor, new Point(30, 300)));
-    this.addChild(new Blink('blink', this.background.scaleFactor, new Point(-100, -30)));
+    this.blinkList.push(new Blink('blink', this.background.scaleFactor, new Point(-500, 50)));
+    this.blinkList.push(new Blink('blink', this.background.scaleFactor, new Point(30, 300)));
+    this.blinkList.push(new Blink('blink', this.background.scaleFactor, new Point(-100, -30)));
 
-    // this.unlockVault();
+    for(let i = 0; i < this.blinkList.length; i++){
+      this.addChild(this.blinkList[i]);
+    }
+    
     this.addChild(this.door, this.handle);
   }
 
@@ -55,6 +57,10 @@ export default class Game extends Scene {
     }
     if(this.handle) {
       this.handle.resize(width, this.background.scaleFactor);
+    }
+
+    for(let i = 0; i < this.blinkList.length; i++){
+      this.blinkList[i].resize(width, this.background.scaleFactor);
     }
   }
 
@@ -85,8 +91,18 @@ export default class Game extends Scene {
     }
     this.startDirection = Math.random() < 0.5;
     this.currNum = 0;
-    console.log('start direction: ' + this.startDirection);
-    console.log('password ' + this.pass);
+    let directionString = '';
+    let tempDir = this.startDirection;
+    for(let i = 0; i < this.pass.length; i++) {
+      if(tempDir){
+        directionString += `clockwise: ${this.pass[i]}, `
+      }else{
+        directionString += `counter-clockwise: ${this.pass[i]}, `
+      }
+      tempDir = !tempDir;
+    }
+    console.log(directionString);
+    console.log(`Don't forget the final spin :)`);
   }
 
   addPassNum(num:number): boolean{
