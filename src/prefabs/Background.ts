@@ -34,7 +34,6 @@ export default class Background extends Container {
     this._sprite.width = width / this._scaleFactor;
 
     this._sprite.scale.set(this._scaleFactor);
-    // this._sprite.anchor.set(0.5);
 
     centerObjects(this);
   }

@@ -67,7 +67,7 @@ export default class Game extends Scene {
 
   clickedHandle(e: FederatedPointerEvent) {
     this.moveHandle(e.globalX > this.handle.x);
-    console.log('CurrentNUm: ' + this.currNum);
+    console.log('Current Num: ' + this.currNum);
   }
 
   generatePassword() {
