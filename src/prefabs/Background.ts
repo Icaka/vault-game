@@ -28,14 +28,13 @@ export default class Background extends Container {
   }
 
   resize(width: number, height: number) {
-      // this._sprite.anchor.set(0);
-      
-      this._scaleFactor = window.innerHeight / this._sprite.texture.height;
 
-      this._sprite.width = width / this._scaleFactor;
+    this._scaleFactor = window.innerHeight / this._sprite.texture.height;
 
-      this._sprite.scale.set(this._scaleFactor);
-      // this._sprite.anchor.set(0.5);
+    this._sprite.width = width / this._scaleFactor;
+
+    this._sprite.scale.set(this._scaleFactor);
+    // this._sprite.anchor.set(0.5);
 
     centerObjects(this);
   }
