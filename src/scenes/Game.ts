@@ -4,12 +4,15 @@ import Handle from "../prefabs/Handle";
 import Scene from "../core/Scene";
 import { centerObjects } from "../utils/misc";
 import { FederatedPointerEvent } from "@pixi/events";
+import Blink from "../prefabs/Blink";
+import { Point } from "pixi.js";
 
 export default class Game extends Scene {
   name = "Game";
   private background!: Background;
   private handle!: Handle;
   private door!: Door;
+  private blink!: Blink;
   private pass!: number[];
   private currentTry!: number[];
   private currNum!: number;
@@ -34,6 +37,11 @@ export default class Game extends Scene {
     this.handle.eventMode = 'static';
     this.handle.on('pointerdown', (e) => this.clickedHandle(e))
 
+    this.addChild(new Blink('blink', this.background.scaleFactor, new Point(-500, 50)));
+    this.addChild(new Blink('blink', this.background.scaleFactor, new Point(30, 300)));
+    this.addChild(new Blink('blink', this.background.scaleFactor, new Point(-100, -30)));
+
+    // this.unlockVault();
     this.addChild(this.door, this.handle);
   }
 
