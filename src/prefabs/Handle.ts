@@ -5,7 +5,7 @@ import PixiPlugin from "gsap/PixiPlugin";
 import * as PIXI from "pixi.js";
 
 
-export default class Door extends Container {
+export default class Handle extends Container {
     name = "Handle";
     private _scaleFactor: number;
     // private _sprite: Sprite;
@@ -34,8 +34,8 @@ export default class Door extends Container {
 
         gsap.registerPlugin(PixiPlugin);
         PixiPlugin.registerPIXI(PIXI);
-        this.eventMode = 'static';
-        this.on('pointerdown', this.onClick);
+        // this.eventMode = 'static';
+        // this.on('pointerdown', this.onClick);
     }
 
     resize(width: number, scFactor: number) {
@@ -53,11 +53,18 @@ export default class Door extends Container {
         this.x -= this.x * (1/37);
     }
 
-    onClick() {
+    public rotate(dir: number) {
         console.log("clicked handle");
-        this.handleRotation += 30;
-        gsap.to(this._handle, {
+        this.handleRotation += dir * 60;
+        gsap.to(this, {
             pixi: {rotation: this.handleRotation },
+            duration: 1,
+          });
+    }
+
+    public reset() {
+        gsap.to(this, {
+            pixi: {rotation: 0 },
             duration: 1,
           });
     }
