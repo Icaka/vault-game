@@ -40,7 +40,6 @@ export default class Handle extends Container {
     }
 
     public rotate(dir: number) {
-        ;
         this.handleRotation += dir * 60;
         gsap.to(this._handle, {
             pixi: { rotation: this.handleRotation },
@@ -52,10 +51,21 @@ export default class Handle extends Container {
         });
     }
 
-    public reset() {
-        gsap.to(this, {
-            pixi: { rotation: 0 },
+    public async reset() {
+        const timeline = gsap.timeline();
+
+        timeline.to(this._handle, {
+            pixi: { rotation: this.handleRotation + 960},
             duration: 1,
         });
+        timeline.to(this._handleShadow, {
+            pixi: { rotation: this.handleRotation + 960},
+            duration: 1,
+        }, 0);
+
+        await timeline;
+
+        this.handleRotation = 0;
+        this.rotate(0);
     }
 }
