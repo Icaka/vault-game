@@ -5,6 +5,7 @@ import gsap from "gsap";
 
 export default class Handle extends Container {
     name = "Handle";
+    readonly ease_in = "power2.inOut";
     private _handle: Sprite;
     private _handleShadow: Sprite;
     private handleRotation = 0;
@@ -30,7 +31,6 @@ export default class Handle extends Container {
         this.addChild(this._handleShadow, this._handle);
 
         centerObjects(this);
-
     }
 
     resize(width: number, scFactor: number) {
@@ -44,10 +44,12 @@ export default class Handle extends Container {
         gsap.to(this._handle, {
             pixi: { rotation: this.handleRotation },
             duration: 1,
+            ease: this.ease_in,
         });
         gsap.to(this._handleShadow, {
             pixi: { rotation: this.handleRotation },
             duration: 1,
+            ease: this.ease_in,
         });
     }
 
@@ -57,10 +59,12 @@ export default class Handle extends Container {
         timeline.to(this._handle, {
             pixi: { rotation: this.handleRotation + 960},
             duration: 1,
+            ease: this.ease_in,
         });
         timeline.to(this._handleShadow, {
             pixi: { rotation: this.handleRotation + 960},
             duration: 1,
+            ease: this.ease_in,
         }, 0);
 
         await timeline;
