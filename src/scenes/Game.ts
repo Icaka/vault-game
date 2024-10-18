@@ -4,15 +4,14 @@ import Handle from "../prefabs/Handle";
 import Scene from "../core/Scene";
 import { centerObjects } from "../utils/misc";
 import { FederatedPointerEvent } from "@pixi/events";
-import Blink from "../prefabs/Blink";
-import { Point } from "pixi.js";
+import BlinkContainer from "../prefabs/BlinkContainer";
 
 export default class Game extends Scene {
   name = "Game";
   private background!: Background;
   private handle!: Handle;
   private door!: Door;
-  private blinkList!: Blink[];
+  private blinkContainer!: BlinkContainer;
   private pass!: number[];
   private currentTry!: number[];
   private currNum!: number;
@@ -27,7 +26,7 @@ export default class Game extends Scene {
     this.background = new Background('bg');
     this.door = new Door('door', 'doorOpen', 'doorOpenShadow', this.background.scaleFactor);
     this.handle = new Handle('handle', "handleShadow", this.background.scaleFactor);
-    this.blinkList = [];
+    this.blinkContainer = new BlinkContainer('blink', this.background.scaleFactor);
     centerObjects(this.door);
 
 
@@ -36,13 +35,7 @@ export default class Game extends Scene {
     this.handle.eventMode = 'static';
     this.handle.on('pointerdown', (e) => this.clickedHandle(e))
 
-    this.blinkList.push(new Blink('blink', this.background.scaleFactor, new Point(-500, 50)));
-    this.blinkList.push(new Blink('blink', this.background.scaleFactor, new Point(30, 300)));
-    this.blinkList.push(new Blink('blink', this.background.scaleFactor, new Point(-100, -30)));
-
-    for (let i = 0; i < this.blinkList.length; i++) {
-      this.addChild(this.blinkList[i]);
-    }
+    this.addChild(this.blinkContainer);
 
     this.addChild(this.door, this.handle);
   }
@@ -58,9 +51,8 @@ export default class Game extends Scene {
     if (this.handle) {
       this.handle.resize(width, this.background.scaleFactor);
     }
-
-    for (let i = 0; i < this.blinkList.length; i++) {
-      this.blinkList[i].resize(width, this.background.scaleFactor);
+    if(this.blinkContainer){
+      this.blinkContainer.resize(width, this.background.scaleFactor);
     }
   }
 
